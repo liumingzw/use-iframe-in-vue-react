@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>iframe Window</title>
+    <style>
+        body {
+            background-color: #D53C2F;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>This is iframe</h2>
+    <button onclick="sendMsgIframeToVue()">发送信息: iframe => vue</button>
+    <script>
+        // 监听所有 msg，然后过滤来自 vue 的
+        window.addEventListener("message", (event) => {
+            const { from, params } = event.data;
+            if (from === "vue") {
+                // 业务代码
+                console.log("iframe 收到 msg", params);
+            }
+        });
+
+        const sendMsgIframeToVue = () => {
+            const msg = {
+                from: "iframe",
+                params: {
+                    p1: "来自 iframe 的 msg",
+                },
+            };
+            const targetOrigin = "*";
+            window.parent.postMessage(msg, targetOrigin);
+        }
+    </script>
+</body>
+
+</html>
